@@ -39,14 +39,19 @@
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhydnFtZXdtZGp6c3h5aXByeGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk4MDgyNDYsImV4cCI6MjAzNTM4NDI0Nn0.pumkW0fPJgVaRX7WBosyCIsobhWTOGbetubwPGwBKuc'
                     },
-                    body: ''
-                    //body: JSON.stringify(postData)
+                    body: JSON.stringify(postData)
                 })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.json();
+                    })
                     .then(data => {
-                        localStorage.setItem('responseId', data.id);
-                        updateButtons(data.id);
-                        document.getElementById('displayId').textContent = 'Your ID: ' + data.id;
+                        var formattedId = "BMK_IP_" + ('000' + data.id).slice(-4); // 四桁の連番形式でIDをフォーマット
+                        localStorage.setItem('responseId', formattedId);
+                        updateButtons(formattedId);
+                        document.getElementById('displayId').textContent = 'Your ID: ' + formattedId;
                     })
                     .catch(error => {
                         console.error('Error:', error);

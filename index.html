@@ -48,7 +48,7 @@
                         return response.json();
                     })
                     .then(data => {
-                        var formattedId = "BMK_IP_" + ('000' + data.id).slice(-4); // 四桁の連番形式でIDをフォーマット
+                        var formattedId = "BMK_IP_" + ('000' + data.id).slice(-4);
                         localStorage.setItem('responseId', formattedId);
                         updateButtons(formattedId);
                         document.getElementById('displayId').textContent = 'Your ID: ' + formattedId;

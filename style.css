@@ -8,7 +8,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 48px;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
 }
 
@@ -52,3 +51,28 @@
     font-size: 16px;
     color: #333;
 }
+
+@media (max-width: 768px) {
+    .organization-name {
+        font-size: 48px;
+    }
+    .site-content {
+        font-size: 64px;
+    }
+    .btn {
+        padding: 15px 30px;
+        font-size: 32px;
+    }
+    .custom-margin-y {
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    .custom-margin-x {
+        margin-left: 2.5rem;
+        margin-right: 2.5rem;
+    }
+    .id-display {
+        font-size: 20px;
+    }
+}
+

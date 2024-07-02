@@ -14,26 +14,29 @@
 
 .organization-name {
     font-size: 24px;
-    /* 組織名のフォントサイズ */
     font-weight: bold;
-    /* フォントを太字に */
     margin-bottom: 20px;
-    /* 下にマージンを追加 */
 }
 
 .site-content {
     font-size: 48px;
-    /* 内容のフォントサイズ */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
 .custom-margin-y {
-    margin-top: 2.5rem;
-    margin-bottom: 2.5rem;
+    margin-top: 4.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .custom-margin-x {
-    margin-left: 7.5rem;
-    margin-right: 7.5rem;
+    margin-left: 6rem;
+    margin-right: 6rem;
 }
 
 .id-display {

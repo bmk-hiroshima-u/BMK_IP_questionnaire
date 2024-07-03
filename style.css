@@ -52,24 +52,24 @@
 
 @media (max-width: 768px) {
     .organization-name {
-        font-size: 48px !important;
+        font-size: 32px;
     }
     .site-content {
-        font-size: 64px !important;
+        font-size: 48px;
     }
     .btn {
-        padding: 15px 30px !important;
-        font-size: 32px !important;
+        padding: 15px 24px;
+        font-size: 20px;
     }
     .custom-margin-y {
-        margin-top: 1.5rem !important;
-        margin-bottom: 0.5rem !important;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
     }
     .custom-margin-x {
-        margin-left: 2.5rem !important;
-        margin-right: 2.5rem !important;
+        margin-left: 1.5rem;
+        margin-right: 1.5rem;
     }
     .id-display {
-        font-size: 20px !important;
+        font-size: 20px;
     }
 }

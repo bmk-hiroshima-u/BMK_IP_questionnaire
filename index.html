@@ -88,12 +88,13 @@
                 console.error('Error fetching forms:', error.message);
                 return;
             }
-            data.forEach((form, index) => {
+            for (let index = 0; index < forms.length; index++) {
+                const form = forms[index];
                 const formId = extractFormId(form.form_url);
                 const container = index === 0 ? 'buttonContainerTop' : 'buttonContainerRest';
                 const updatedUrl = updateFormUrl(form.form_view_url, participantId);
                 addButton(updatedUrl, form.button_name, container, formId);
-            });
+            };
             updateButtonStyles(participantId);
         }
 

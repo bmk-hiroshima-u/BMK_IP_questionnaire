@@ -12,8 +12,19 @@
 
 .organization-name {
     font-size: 24px;
-    font-weight: bold;
     margin-bottom: 20px;
+}
+
+.site-content {
+    font-size: 28px; /* サイトコンテンツのフォントサイズを調整 */
+    font-weight: bold;
+    margin-top: 15px; /* 上の余白を追加 */
+}
+
+.research-title {
+    font-size: 18px; /* タイトルのフォントサイズを小さく設定 */
+    margin-top: 10px; /* 上の余白を追加 */
+    font-weight: normal; /* フォントウェイトを通常に設定 */
 }
 
 .main-content {
@@ -27,10 +38,6 @@
 .background {
     background-color: #eee; /* 周囲の背景色 */
     padding: 50px 0; /* 上下に余白を追加 */
-}
-
-.site-content {
-    font-size: 48px;
 }
 
 .button-container {
@@ -86,6 +93,9 @@
     }
     .site-content {
         font-size: 48px;
+    }
+    .research-title {
+        font-size: 22px;
     }
     .btn {
         padding: 15px 24px;

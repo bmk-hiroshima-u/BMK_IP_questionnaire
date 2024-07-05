@@ -16,6 +16,19 @@
     margin-bottom: 20px;
 }
 
+.main-content {
+    background-color: #f8f9fa; /* 薄い背景色 */
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 軽い影を追加 */
+}
+
+.background {
+    background-color: #eee; /* 周囲の背景色 */
+    padding: 50px 0; /* 上下に余白を追加 */
+}
+
 .site-content {
     font-size: 48px;
 }
@@ -81,5 +94,10 @@
     }
     .id-display {
         font-size: 20px;
+    }
+
+    .background {
+        background-color: transparent; /* 背景色を透明に設定 */
+        padding: 0; /* パディングを無効にする */
     }
 }

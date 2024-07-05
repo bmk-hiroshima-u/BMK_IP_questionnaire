@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     <title>広島大学 アンケート調査サイト</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -15,14 +17,16 @@
         <div class="site-content">アンケート調査</div>
         <div class="research-title">慢性的な痛みに対する心理・身体・脳からの多面的解明研究へ参加される皆様へ</div>
     </div>
-    <div id="displayId" class="id-display"></div>
-    <div class="background">
-        <div class="container main-content">
-            <div class="instructions mt-3">
-                <p>基本情報入力後，質問１から順番に回答してください</p>
+    <div id="content" style="display:none;">
+        <div id="displayId" class="id-display"></div>
+        <div class="background">
+            <div class="container main-content">
+                <div class="instructions mt-3">
+                    <p>基本情報入力後，質問１から順番に回答してください</p>
+                </div>
+                <div id="buttonContainerTop" class="button-container mt-3"></div>
+                <div id="buttonContainerRest" class="button-container mt-3"></div>
             </div>
-            <div id="buttonContainerTop" class="button-container mt-3"></div>
-            <div id="buttonContainerRest" class="button-container mt-3"></div>
         </div>
     </div>
     <div class="contact-info">
@@ -30,8 +34,6 @@
         <p>広島大学<br>保健管理センター，脳・こころ・感性科学研究センター<br>准教授 吉野敦雄<br>メール: <a
                 href="mailto:yoshino@hiroshima-u.ac.jp">yoshino@hiroshima-u.ac.jp</a></p>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -5,6 +5,16 @@ const { createClient } = supabase;
 const _supabase = createClient(supabaseUrl, supabaseKey);
 
 document.addEventListener("DOMContentLoaded", async function () {
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get("token");
+  const correctToken = "yxmodlonggpx22fzrtzm";
+
+  if (token === correctToken) {
+    document.getElementById("content").style.display = "block";
+  } else {
+    alert("無効なトークンです。アクセスできません。");
+  }
+
   let participantId = localStorage.getItem("responseId");
   if (!participantId) {
     participantId = await registerParticipant();

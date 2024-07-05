@@ -1,5 +1,5 @@
 .header-banner {
-    background: url('https://lh3.googleusercontent.com/d/1RMP1y2QZc-NxyL_cq0yJpNRMC7aahtnV') no-repeat center center;
+    background: url('img/header-banner.jpg') no-repeat center center;
     background-size: cover;
     color: white;
     height: 300px;
@@ -10,41 +10,33 @@
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
 }
 
-.organization-name {
-    font-size: 24px;
+.organization-name, .site-content, .research-title {
+    font-size: 20px;
     margin-bottom: 20px;
 }
 
 .site-content {
-    font-size: 28px; /* サイトコンテンツのフォントサイズを調整 */
+    font-size: 28px;
     font-weight: bold;
-    margin-top: 15px; /* 上の余白を追加 */
-}
-
-.research-title {
-    font-size: 18px; /* タイトルのフォントサイズを小さく設定 */
-    margin-top: 10px; /* 上の余白を追加 */
-    font-weight: normal; /* フォントウェイトを通常に設定 */
 }
 
 .main-content {
-    background-color: #f8f9fa; /* 薄い背景色 */
+    background-color: #f8f9fa;
     padding: 20px;
     margin-top: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 軽い影を追加 */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .background {
-    background-color: #eee; /* 周囲の背景色 */
-    padding: 50px 0; /* 上下に余白を追加 */
+    background-color: #eee;
+    padding: 50px 0;
 }
 
 .button-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 2rem;
-    margin: 100px auto 0 auto;
 }
 
 #buttonContainerTop {
@@ -107,7 +99,7 @@
     }
 
     .background {
-        background-color: transparent; /* 背景色を透明に設定 */
-        padding: 0; /* パディングを無効にする */
+        background-color: transparent;
+        padding: 0;
     }
 }

@@ -79,6 +79,26 @@
     border-top: 1px solid #ccc;
 }
 
+#developerSettings {
+    bottom: 0;
+    width: 100%;
+    background-color: #f8f9fa;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+.developer-settings-content {
+    text-align: center;
+}
+#developerSettings h4 {
+    margin-bottom: 10px;
+}
+#newIdButton, #idSelect {
+    margin: 5px;
+    padding: 8px 16px;
+}
+
 @media (max-width: 768px) {
     .organization-name {
         font-size: 32px;

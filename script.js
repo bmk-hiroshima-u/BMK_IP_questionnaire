@@ -15,6 +15,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     alert("無効なトークンです。アクセスできません。");
   }
 
+  if (urlParams.has("devmode")) {
+    document.getElementById("developerSettings").style.display = "block";
+  }
+
   let participantId = localStorage.getItem("responseId");
   if (!participantId) {
     participantId = await registerParticipant();
@@ -23,6 +27,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   document.getElementById("displayId").textContent =
     "Your ID: " + participantId;
   await fetchAndDisplayForms(participantId);
+
+  setupDeveloperSettings();
 });
 
 document.addEventListener("visibilitychange", async function () {
@@ -36,7 +42,7 @@ document.addEventListener("visibilitychange", async function () {
 
 async function registerParticipant() {
   const { data, error } = await _supabase
-    .from("responses")
+    .from("id_list")
     .insert({
       user_agent: navigator.userAgent,
       screen_resolution: `${window.screen.width}x${window.screen.height}`,
@@ -66,7 +72,10 @@ function updateFormUrl(formUrl, participantId) {
 }
 
 async function fetchAndDisplayForms(participantId) {
-  const { data, error } = await _supabase.from("form_url_list_a2").select("*");
+  const urlParams = new URLSearchParams(window.location.search);
+  const tableName = urlParams.get("table") || "form_url_list_a";
+
+  const { data, error } = await _supabase.from(tableName).select("*");
   if (error) {
     console.error("Error fetching forms:", error.message);
     return;
@@ -97,11 +106,13 @@ function addButton(link, label, containerId, formId) {
 async function updateButtonStyles(participantId) {
   const buttons = document.querySelectorAll("a[data-form-id]");
   for (const button of buttons) {
+    const updatedUrl = updateFormUrl(button.href, participantId);
     const formId = button.dataset.formId;
     const isCompleted = await checkCompleted(participantId, formId);
     button.className = `btn btn-lg ${
       isCompleted ? "btn-success" : "btn-primary"
     }`;
+    button.href = updatedUrl;
   }
 }
 
@@ -120,4 +131,48 @@ async function checkCompleted(participantId, formId) {
 function extractFormId(url) {
   const match = url.match(/\/d\/(.+?)\//);
   return match ? match[1] : null;
+}
+
+async function setupDeveloperSettings() {
+  const developerSettings = document.getElementById("developerSettings");
+  const content = developerSettings.querySelector(
+    ".developer-settings-content"
+  );
+
+  const newIdButton = document.getElementById("newIdButton");
+  newIdButton.textContent = "新規ID取得";
+  newIdButton.onclick = async () => {
+    localStorage.removeItem("responseId");
+    const newId = await registerParticipant();
+    localStorage.setItem("responseId", newId);
+    document.getElementById("displayId").textContent = "Your ID: " + newId;
+    await updateButtonStyles(newId);
+  };
+  content.appendChild(newIdButton);
+
+  const idSelect = document.getElementById("idSelect");
+  const { data: ids, error } = await _supabase.from("id_list").select("id");
+  if (error) {
+    console.error("Error fetching ids:", error.message);
+    return;
+  }
+  ids.forEach((idObj) => {
+    const option = document.createElement("option");
+    option.value = "BMK_IP_" + ("000" + idObj.id).slice(-4);
+    option.textContent = option.value;
+    idSelect.appendChild(option);
+  });
+  idSelect.onchange = async () => {
+    const selectedId = idSelect.value;
+    localStorage.setItem("responseId", selectedId);
+    document.getElementById("displayId").textContent = "Your ID: " + selectedId;
+    await updateButtonStyles(selectedId);
+  };
+  content.appendChild(idSelect);
+
+  if (ids.length > 0) {
+    idSelect.value =
+      localStorage.getItem("responseId") ||
+      "BMK_IP_" + ("000" + ids[0].id).slice(-4);
+  }
 }

@@ -97,9 +97,18 @@ function addButton(link, label, containerId, formId) {
   const button = document.createElement("a");
   button.href = link;
   button.target = "_blank";
+  button.rel = "noopener noreferrer";
   button.className = "btn btn-lg btn-primary";
-  button.textContent = label;
   button.dataset.formId = formId;
+
+  const textNode = document.createTextNode(label);
+  button.appendChild(textNode);
+
+  const icon = document.createElement("i");
+  icon.className = "fas fa-external-link-alt";
+  icon.style.marginLeft = "16px";
+
+  button.appendChild(icon);
   container.appendChild(button);
 }
 

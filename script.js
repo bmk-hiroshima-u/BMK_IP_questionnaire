@@ -124,6 +124,9 @@ async function updateButtonStyles(participantId) {
     button.href = updatedUrl;
   }
 
+  document.getElementById("displayId").textContent =
+    "Your ID: " + participantId;
+
   const idSelect = document.getElementById("idSelect");
   const existingIds = new Set();
   for (let option of idSelect.options) {
@@ -145,6 +148,10 @@ async function updateButtonStyles(participantId) {
       idSelect.appendChild(option);
     }
   });
+
+  if (idSelectUpdated || !existingIds.has(participantId)) {
+    idSelect.value = "BMK_IP_" + ("000" + participantId).slice(-4);
+  }
 }
 
 async function checkCompleted(participantId, formId) {

@@ -149,7 +149,7 @@ async function updateButtonStyles(participantId) {
     }
   });
 
-  if (idSelectUpdated || !existingIds.has(participantId)) {
+  if (!existingIds.has(participantId)) {
     idSelect.value = "BMK_IP_" + ("000" + participantId).slice(-4);
   }
 }

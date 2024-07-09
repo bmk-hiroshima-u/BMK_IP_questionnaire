@@ -123,6 +123,28 @@ async function updateButtonStyles(participantId) {
     }`;
     button.href = updatedUrl;
   }
+
+  const idSelect = document.getElementById("idSelect");
+  const existingIds = new Set();
+  for (let option of idSelect.options) {
+    existingIds.add(option.value);
+  }
+
+  const { data: ids, error } = await _supabase.from("id_list").select("id");
+  if (error) {
+    console.error("Error fetching ids:", error.message);
+    return;
+  }
+
+  ids.forEach((idObj) => {
+    const idValue = "BMK_IP_" + ("000" + idObj.id).slice(-4);
+    if (!existingIds.has(idValue)) {
+      const option = document.createElement("option");
+      option.value = idValue;
+      option.textContent = idValue;
+      idSelect.appendChild(option);
+    }
+  });
 }
 
 async function checkCompleted(participantId, formId) {

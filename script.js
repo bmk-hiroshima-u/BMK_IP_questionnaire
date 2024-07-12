@@ -7,14 +7,18 @@ const _supabase = createClient(supabaseUrl, supabaseKey);
 document.addEventListener("DOMContentLoaded", async function () {
   const urlParams = new URLSearchParams(window.location.search);
   const token = urlParams.get("token");
-  const correctToken = "yxmodlonggpx22fzrtzm";
+  const response = await fetch(
+    `/api/authenticate?token=${encodeURIComponent(token)}`
+  );
+  const data = await response.json();
   const table = urlParams.get("table");
   const consentDiv = document.getElementById("consent");
 
-  if (token === correctToken) {
+  if (data.authorized) {
     document.getElementById("content").style.display = "block";
   } else {
     alert("無効なトークンです。アクセスできません。");
+    return;
   }
 
   if (urlParams.has("devmode")) {

@@ -48,6 +48,9 @@ document.addEventListener("visibilitychange", async function () {
     const participantId = localStorage.getItem("responseId");
     if (participantId) {
       updateButtonStyles(participantId);
+      setTimeout(() => {
+        updateButtonStyles(participantId);
+      }, 3000);
     }
   }
 });

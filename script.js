@@ -63,8 +63,8 @@ document
 
       if (response.ok) {
         const blob = await response.blob();
-        document.getElementById("pdfViewer").src = URL.createObjectURL(blob);
-        document.getElementById("pdfViewer").style.display = "block";
+        const pdfUrl = URL.createObjectURL(blob);
+        window.open(pdfUrl, "_blank");
       } else {
         alert("Incorrect password.");
       }

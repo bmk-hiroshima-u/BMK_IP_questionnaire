@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   const urlParams = new URLSearchParams(window.location.search);
   const token = urlParams.get("token");
   const correctToken = "yxmodlonggpx22fzrtzm";
+  const table = urlParams.get("table");
+  const consentDiv = document.getElementById("consent");
 
   if (token === correctToken) {
     document.getElementById("content").style.display = "block";
@@ -17,6 +19,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   if (urlParams.has("devmode")) {
     document.getElementById("developerSettings").style.display = "block";
+  }
+
+  if (table === "form_url_list_c") {
+    consentDiv.style.display = "none";
+  } else {
+    consentDiv.style.display = "block";
   }
 
   let participantId = localStorage.getItem("responseId");
@@ -39,6 +47,29 @@ document.addEventListener("visibilitychange", async function () {
     }
   }
 });
+
+document
+  .getElementById("pdfLink")
+  .addEventListener("click", async function (event) {
+    event.preventDefault();
+    const password = prompt("Please enter the password to access the PDF:");
+    if (password) {
+      const response = await fetch(
+        `/api/serve-pdf?password=${encodeURIComponent(password)}`,
+        {
+          method: "GET",
+        }
+      );
+
+      if (response.ok) {
+        const blob = await response.blob();
+        document.getElementById("pdfViewer").src = URL.createObjectURL(blob);
+        document.getElementById("pdfViewer").style.display = "block";
+      } else {
+        alert("Incorrect password.");
+      }
+    }
+  });
 
 async function registerParticipant() {
   const { data, error } = await _supabase

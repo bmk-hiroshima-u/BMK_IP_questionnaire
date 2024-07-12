@@ -149,15 +149,30 @@ function addButton(link, label, containerId, formId) {
 
 async function updateButtonStyles(participantId) {
   const buttons = document.querySelectorAll("a[data-form-id]");
-  for (const button of buttons) {
-    const updatedUrl = updateFormUrl(button.href, participantId);
+  const formIds = Array.from(buttons).map((button) => button.dataset.formId);
+
+  const { data, error_rsp } = await _supabase
+    .from("completed_responses")
+    .select("*")
+    .in("form_id", formIds)
+    .eq("participant_id", participantId);
+
+  if (error_rsp) {
+    console.error("Error fetching completion statuses:", error_rsp.message);
+    return;
+  }
+
+  const completedFormIds = new Set(data.map((item) => item.form_id));
+
+  buttons.forEach((button) => {
     const formId = button.dataset.formId;
-    const isCompleted = await checkCompleted(participantId, formId);
+    const isCompleted = completedFormIds.has(formId);
     button.className = `btn btn-lg ${
       isCompleted ? "btn-success" : "btn-primary"
     }`;
+    const updatedUrl = updateFormUrl(button.href, participantId);
     button.href = updatedUrl;
-  }
+  });
 
   document.getElementById("displayId").textContent =
     "Your ID: " + participantId;
@@ -168,9 +183,11 @@ async function updateButtonStyles(participantId) {
     existingIds.add(option.value);
   }
 
-  const { data: ids, error } = await _supabase.from("id_list").select("id");
-  if (error) {
-    console.error("Error fetching ids:", error.message);
+  const { data_id: ids, error_id } = await _supabase
+    .from("id_list")
+    .select("id");
+  if (error_id) {
+    console.error("Error fetching ids:", error_id.message);
     return;
   }
 
@@ -187,18 +204,6 @@ async function updateButtonStyles(participantId) {
   if (!existingIds.has(participantId)) {
     idSelect.value = "BMK_IP_" + ("000" + participantId).slice(-4);
   }
-}
-
-async function checkCompleted(participantId, formId) {
-  const { data, error } = await _supabase
-    .from("completed_responses")
-    .select("*")
-    .match({ participant_id: participantId, form_id: formId });
-  if (error) {
-    console.error("Error checking completion status:", error.message);
-    return false;
-  }
-  return data.length > 0;
 }
 
 function extractFormId(url) {

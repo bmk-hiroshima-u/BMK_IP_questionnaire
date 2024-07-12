@@ -5,12 +5,7 @@ module.exports = (req, res) => {
   const { password } = req.query;
 
   if (password === "painres") {
-    const filePath = path.join(
-      __dirname,
-      "..",
-      "resources",
-      "Consent document.pdf"
-    );
+    const filePath = path.join(__dirname, "resources", "Consent document.pdf");
     fs.readFile(filePath, (err, data) => {
       if (err) {
         res.status(500).send("Error loading the PDF file.");

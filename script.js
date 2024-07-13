@@ -71,7 +71,7 @@ document
       if (response.ok) {
         const blob = await response.blob();
         const pdfUrl = URL.createObjectURL(blob);
-        window.open(pdfUrl);
+        window.open(pdfUrl, "_self");
       } else {
         alert("Incorrect password.");
       }

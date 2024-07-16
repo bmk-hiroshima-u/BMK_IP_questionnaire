@@ -88,7 +88,7 @@ async function registerParticipant() {
       language: navigator.language,
       platform: navigator.platform,
     })
-    .select("*");
+    .select("id");
   if (error) {
     console.error("Error:", error.message);
     return;

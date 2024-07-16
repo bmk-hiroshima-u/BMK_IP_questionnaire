@@ -78,24 +78,34 @@ document
     }
   });
 
-async function registerParticipant() {
-  const { data, error } = await _supabase
-    .from("id_list")
-    .insert({
-      user_agent: navigator.userAgent,
-      screen_resolution: `${window.screen.width}x${window.screen.height}`,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      language: navigator.language,
-      platform: navigator.platform,
-    })
-    .select("id");
-  if (error) {
-    console.error("Error:", error.message);
-    return;
-  }
-  const formattedId = "BMK_IP_" + ("000" + data[0].id).slice(-4);
-  return formattedId;
-}
+  async function registerParticipant() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    const table = urlParams.get('table');
+    const devmode = urlParams.get('devmode') === 'true';
+  
+    const { data, error } = await _supabase
+      .from("id_list")
+      .insert({
+        user_agent: navigator.userAgent,
+        screen_resolution: `${window.screen.width}x${window.screen.height}`,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        language: navigator.language,
+        platform: navigator.platform,
+        token: token,
+        form_table: table,
+        devmode: devmode
+      })
+      .select("id");
+  
+    if (error) {
+      console.error("Error:", error.message);
+      return;
+    }
+  
+    const formattedId = "BMK_IP_" + ("000" + data[0].id).slice(-4);
+    return formattedId;
+  }  
 
 function updateFormUrl(formUrl, participantId) {
   const url = new URL(formUrl);

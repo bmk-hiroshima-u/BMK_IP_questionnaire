@@ -1,111 +1,111 @@
 const supabaseUrl = "https://xrvqmewmdjzsxyiprxck.supabase.co";
-const supabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhydnFtZXdtZGp6c3h5aXByeGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk4MDgyNDYsImV4cCI6MjAzNTM4NDI0Nn0.pumkW0fPJgVaRX7WBosyCIsobhWTOGbetubwPGwBKuc";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhydnFtZXdtZGp6c3h5aXByeGNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk4MDgyNDYsImV4cCI6MjAzNTM4NDI0Nn0.pumkW0fPJgVaRX7WBosyCIsobhWTOGbetubwPGwBKuc";
 const { createClient } = supabase;
 const _supabase = createClient(supabaseUrl, supabaseKey);
 
-document.addEventListener("DOMContentLoaded", async function () {
-  const urlParams = new URLSearchParams(window.location.search);
-  const token = urlParams.get("token");
-  const response = await fetch(
-    `/api/authenticate?token=${encodeURIComponent(token)}`
-  );
-  const data = await response.json();
-  const table = urlParams.get("table");
-  const consentDiv = document.getElementById("consent");
-
-  if (data.authorized) {
-    document.getElementById("content").style.display = "block";
-  } else {
-    alert("無効なトークンです。アクセスできません。");
-    return;
-  }
-
-  if (urlParams.has("devmode")) {
-    document.getElementById("developerSettings").style.display = "block";
-  }
-
-  if (table === "form_url_list_c") {
-    consentDiv.style.display = "none";
-  } else {
-    consentDiv.style.display = "block";
-  }
-
-  let participantId = localStorage.getItem("responseId");
-  if (!participantId) {
-    participantId = await registerParticipant();
-    localStorage.setItem("responseId", participantId);
-  }
-  document.getElementById("displayId").textContent =
-    "Your ID: " + participantId;
-  await fetchAndDisplayForms(participantId);
-
-  setupDeveloperSettings();
-});
-
-document.addEventListener("visibilitychange", async function () {
-  if (document.visibilityState === "visible") {
-    const participantId = localStorage.getItem("responseId");
-    if (participantId) {
-      updateButtonStyles(participantId);
-      setTimeout(() => {
-        updateButtonStyles(participantId);
-      }, 3000);
+function isLocalStorageAvailable() {
+    try {
+        const test = "test";
+        localStorage.setItem(test, test);
+        localStorage.removeItem(test);
+        return true;
+    } catch (e) {
+        return false;
     }
-  }
+}
+
+const storageAvailable = isLocalStorageAvailable();
+
+function getParticipantId() {
+    return storageAvailable ? localStorage.getItem("responseId") : window.tempStorage || null;
+}
+
+function setParticipantId(id) {
+    if (storageAvailable) {
+        localStorage.setItem("responseId", id);
+    } else {
+        window.tempStorage = id;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    handleAuthentication(urlParams);
+    handleVisibilityChanges();
 });
 
-document
-  .getElementById("pdfLink")
-  .addEventListener("click", async function (event) {
+async function handleAuthentication(urlParams) {
+    const token = urlParams.get("token");
+    const response = await fetch(`/api/authenticate?token=${encodeURIComponent(token)}`);
+    const data = await response.json();
+
+    if (data.authorized) {
+        document.getElementById("content").style.display = "block";
+    } else {
+        alert("無効なトークンです。アクセスできません。");
+        return;
+    }
+
+    document.getElementById("developerSettings").style.display = urlParams.has("devmode") ? "block" : "none";
+    document.getElementById("consent").style.display = urlParams.get("table") === "form_url_list_c" ? "none" : "block";
+
+    let participantId = getParticipantId();
+    if (!participantId) {
+        participantId = await registerParticipant();
+        setParticipantId(participantId);
+    }
+    document.getElementById("displayId").textContent = "Your ID: " + participantId;
+    await fetchAndDisplayForms(participantId);
+    setupDeveloperSettings();
+}
+
+document.getElementById("pdfLink").addEventListener("click", handlePdfAccess);
+
+async function handlePdfAccess(event) {
     event.preventDefault();
     const password = prompt("Please enter the password to access the PDF:");
-    if (password) {
-      const response = await fetch(
-        `/api/serve-pdf?password=${encodeURIComponent(password)}`,
-        {
-          method: "GET",
-        }
-      );
+    if (!password) return;
 
-      if (response.ok) {
+    const response = await fetch(`/api/serve-pdf?password=${encodeURIComponent(password)}`, { method: "GET" });
+    if (response.ok) {
         const blob = await response.blob();
-        const pdfUrl = URL.createObjectURL(blob);
-        window.open(pdfUrl, "_self");
-      } else {
+        window.open(URL.createObjectURL(blob), "_self");
+    } else {
         alert("Incorrect password.");
-      }
     }
-  });
+}
 
-  async function registerParticipant() {
+async function registerParticipant() {
     const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
-    const table = urlParams.get('table');
-    const devmode = urlParams.get('devmode') === 'true';
-  
-    const { data, error } = await _supabase
-      .from("id_list")
-      .insert({
+    const { data, error } = await _supabase.from("id_list").insert({
         user_agent: navigator.userAgent,
         screen_resolution: `${window.screen.width}x${window.screen.height}`,
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         language: navigator.language,
         platform: navigator.platform,
-        token: token,
-        form_table: table,
-        devmode: devmode
-      })
-      .select("id");
-  
+        token: urlParams.get('token'),
+        form_table: urlParams.get('table'),
+        devmode: urlParams.get('devmode') === 'true'
+    }).select("id");
+
     if (error) {
-      console.error("Error:", error.message);
-      return;
+        console.error("Error:", error.message);
+        return;
     }
-  
-    const formattedId = "BMK_IP_" + ("000" + data[0].id).slice(-4);
-    return formattedId;
-  }  
+
+    return "BMK_IP_" + ("000" + data[0].id).slice(-4);
+}
+
+function handleVisibilityChanges() {
+    document.addEventListener("visibilitychange", async function () {
+        if (document.visibilityState !== "visible") return;
+        const participantId = getParticipantId();
+        if (!participantId) return;
+
+        updateButtonStyles(participantId);
+        setTimeout(() => updateButtonStyles(participantId), 3000);
+    });
+}
 
 function updateFormUrl(formUrl, participantId) {
   const url = new URL(formUrl);
@@ -120,72 +120,57 @@ function updateFormUrl(formUrl, participantId) {
 }
 
 async function fetchAndDisplayForms(participantId) {
-  const urlParams = new URLSearchParams(window.location.search);
-  const tableName = urlParams.get("table") || "form_url_list_a";
+    const tableName = new URLSearchParams(window.location.search).get("table") || "form_url_list_a";
+    const { data, error } = await _supabase.from(tableName).select("*");
 
-  const { data, error } = await _supabase.from(tableName).select("*");
-  if (error) {
-    console.error("Error fetching forms:", error.message);
-    return;
-  }
+    if (error) {
+        console.error("Error fetching forms:", error.message);
+        return;
+    }
 
-  for (let index = 0; index < data.length; index++) {
-    const form = data[index];
-    const formId = extractFormId(form.form_url);
-    const container =
-      index === 0 ? "buttonContainerTop" : "buttonContainerRest";
-    const updatedUrl = updateFormUrl(form.form_view_url, participantId);
-    addButton(updatedUrl, form.button_name, container, formId);
-  }
-  updateButtonStyles(participantId);
+    data.forEach((form, index) => {
+        const formId = extractFormId(form.form_url);
+        const containerId = index === 0 ? "buttonContainerTop" : "buttonContainerRest";
+        addButton(updateFormUrl(form.form_view_url, participantId), form.button_name, containerId, formId);
+    });
+
+    updateButtonStyles(participantId);
 }
 
 function addButton(link, label, containerId, formId) {
-  const container = document.getElementById(containerId);
-  const button = document.createElement("a");
-  button.href = link;
-  button.target = "_blank";
-  button.rel = "noopener noreferrer";
-  button.className = "btn btn-lg btn-primary";
-  button.dataset.formId = formId;
+    const container = document.getElementById(containerId);
+    const button = document.createElement("a");
+    button.href = link;
+    button.target = "_blank";
+    button.rel = "noopener noreferrer";
+    button.className = "btn btn-lg btn-primary";
+    button.dataset.formId = formId;
 
-  const textNode = document.createTextNode(label);
-  button.appendChild(textNode);
+    const textNode = document.createTextNode(label);
+    const icon = document.createElement("i");
+    icon.className = "fas fa-external-link-alt";
+    icon.style.marginLeft = "16px";
 
-  const icon = document.createElement("i");
-  icon.className = "fas fa-external-link-alt";
-  icon.style.marginLeft = "16px";
-
-  button.appendChild(icon);
-  container.appendChild(button);
+    button.append(textNode, icon);
+    container.appendChild(button);
 }
 
 async function updateButtonStyles(participantId) {
-  const buttons = document.querySelectorAll("a[data-form-id]");
-  const formIds = Array.from(buttons).map((button) => button.dataset.formId);
+    const buttons = document.querySelectorAll("a[data-form-id]");
+    const formIds = Array.from(buttons, button => button.dataset.formId);
+    const { data, error_rsp } = await _supabase.from("completed_responses").select("*").in("form_id", formIds).eq("participant_id", participantId);
 
-  const { data, error_rsp } = await _supabase
-    .from("completed_responses")
-    .select("*")
-    .in("form_id", formIds)
-    .eq("participant_id", participantId);
+    if (error_rsp) {
+        console.error("Error fetching completion statuses:", error_rsp.message);
+        return;
+    }
 
-  if (error_rsp) {
-    console.error("Error fetching completion statuses:", error_rsp.message);
-    return;
-  }
-
-  const completedFormIds = new Set(data.map((item) => item.form_id));
-
-  buttons.forEach((button) => {
-    const formId = button.dataset.formId;
-    const isCompleted = completedFormIds.has(formId);
-    button.className = `btn btn-lg ${
-      isCompleted ? "btn-success" : "btn-primary"
-    }`;
-    const updatedUrl = updateFormUrl(button.href, participantId);
-    button.href = updatedUrl;
-  });
+    const completedFormIds = new Set(data.map(item => item.form_id));
+    buttons.forEach(button => {
+        const formId = button.dataset.formId;
+        button.className = `btn btn-lg ${completedFormIds.has(formId) ? "btn-success" : "btn-primary"}`;
+        button.href = updateFormUrl(button.href, participantId);
+    });
 
   document.getElementById("displayId").textContent =
     "Your ID: " + participantId;

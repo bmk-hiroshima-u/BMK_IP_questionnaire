@@ -84,12 +84,6 @@ document
     const table = urlParams.get('table');
     const devmode = urlParams.get('devmode') === 'true';
   
-    let storageCapacity;
-    if (navigator.storage && navigator.storage.estimate) {
-      const storageEstimate = await navigator.storage.estimate();
-      storageCapacity = storageEstimate.quota;
-    }
-
     const { data, error } = await _supabase
       .from("id_list")
       .insert({
@@ -100,8 +94,7 @@ document
         platform: navigator.platform,
         token: token,
         form_table: table,
-        devmode: devmode,
-        storage_capacity: storageCapacity
+        devmode: devmode
       })
       .select("id");
   

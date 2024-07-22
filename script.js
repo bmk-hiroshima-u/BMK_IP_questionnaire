@@ -29,8 +29,10 @@ function getParticipantId() {
     }
   } else if (window.tempStorage) {
     return window.tempStorage;
+  } else {
+    var urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("responseId") || null;
   }
-  return null;
 }
 
 function setParticipantId(id) {
@@ -41,6 +43,9 @@ function setParticipantId(id) {
       "responseId=" + id + ";path=/;max-age=" + 60 * 60 * 24 * 365;
     window.tempStorage = id;
   }
+  var url = new URL(window.location);
+  url.searchParams.set("responseId", id);
+  window.history.replaceState({}, "", url);
 }
 
 document.addEventListener("DOMContentLoaded", async function () {

@@ -1,142 +1,162 @@
 .header-banner {
-    background: url('img/header-banner.webp') no-repeat center center;
-    background-size: cover;
-    color: white;
-    height: 300px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 1);
+  background: url("img/header-banner.webp") no-repeat center center;
+  background-size: cover;
+  color: white;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 1);
 }
 
-.organization-name, .site-content, .research-title {
-    font-size: 24px;
-    margin-bottom: 20px;
+.organization-name,
+.site-content,
+.research-title {
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
 .site-content {
-    font-size: 32px;
-    font-weight: bold;
-    margin-bottom: 8px;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 
 .main-content {
-    background-color: #f8f9fa;
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  background-color: #f8f9fa;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .background {
-    background-color: #eee;
-    padding: 50px 0;
+  background-color: #eee;
+  padding: 50px 0;
 }
 
 .button-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 2rem;
 }
 
 #buttonContainerTop {
-    margin-top: 3rem;
-    margin-bottom: 3rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
 }
 
 #buttonContainerRest {
-    margin-bottom: 3rem;
+  margin-bottom: 3rem;
 }
 
 .btn {
-    padding: 20px 40px;
-    margin: 1rem 1rem 0.5rem;
+  padding: 20px 40px;
+  margin: 1rem 1rem 0.5rem;
 }
 
 .id-display {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    font-size: 16px;
-    color: #333;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  font-size: 16px;
+  color: #333;
 }
 
-.instructions, .consent {
-    text-align: left;
-    font-size: 1.3rem;
-    margin-left: 1.5rem;
+.instructions,
+.consent {
+  text-align: left;
+  font-size: 1.3rem;
+  margin-left: 1.5rem;
+}
+
+.small-text {
+  font-size: small;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: normal;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: normal;
+  margin-bottom: 8px;
 }
 
 .contact-info {
-    padding: 20px;
-    background-color: #f8f9fa;
-    text-align: center;
-    border-top: 1px solid #ccc;
+  padding: 20px;
+  background-color: #f8f9fa;
+  text-align: center;
+  border-top: 1px solid #ccc;
 }
 
 #developerSettings {
-    bottom: 0;
-    width: 100%;
-    background-color: #f8f9fa;
-    border-top: 1px solid #ccc;
-    padding: 10px;
-    text-align: center;
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+  bottom: 0;
+  width: 100%;
+  background-color: #f8f9fa;
+  border-top: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 .developer-settings-content {
-    text-align: center;
+  text-align: center;
 }
 #developerSettings h4 {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
-#newIdButton, #idSelect {
-    margin: 5px;
-    padding: 8px 16px;
+#newIdButton,
+#idSelect {
+  margin: 5px;
+  padding: 8px 16px;
 }
 
 .desktop-only {
-    display: block;
+  display: block;
 }
 
 .mobile-only {
-    display: none;
+  display: none;
 }
 
 @media (max-width: 768px) {
-    .organization-name {
-        font-size: 22px;
-    }
-    .site-content {
-        font-size: 48px;
-    }
-    .research-title {
-        font-size: 22px;
-    }
-    .btn {
-        padding: 15px 24px;
-        font-size: 20px;
-        margin: 1.5rem;
-    }
-    .id-display {
-        font-size: 20px;
-    }
+  .organization-name {
+    font-size: 22px;
+  }
+  .site-content {
+    font-size: 48px;
+  }
+  .research-title {
+    font-size: 22px;
+  }
+  .btn {
+    padding: 15px 24px;
+    font-size: 20px;
+    margin: 1.5rem;
+  }
+  .id-display {
+    font-size: 20px;
+  }
 
-    .background {
-        background-color: transparent;
-        padding: 0;
-    }
+  .background {
+    background-color: transparent;
+    padding: 0;
+  }
 
-    .desktop-only {
-        display: none;
-    }
+  .desktop-only {
+    display: none;
+  }
 
-    .mobile-only {
-        display: block;
-    }
+  .mobile-only {
+    display: block;
+  }
 }

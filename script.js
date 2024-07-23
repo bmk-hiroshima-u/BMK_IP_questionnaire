@@ -55,18 +55,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 async function handleAuthentication(urlParams) {
-  const token = urlParams.get("token");
-  const response = await fetch(
-    `/api/authenticate?token=${encodeURIComponent(token)}`
-  );
-  const data = await response.json();
+  // const token = urlParams.get("token");
+  // const response = await fetch(
+  //   `/api/authenticate?token=${encodeURIComponent(token)}`
+  // );
+  // const data = await response.json();
 
-  if (data.authorized) {
-    document.getElementById("content").style.display = "block";
-  } else {
-    alert("無効なトークンです。アクセスできません。");
-    return;
-  }
+  // if (data.authorized) {
+  document.getElementById("content").style.display = "block";
+  // } else {
+  //   alert("無効なトークンです。アクセスできません。");
+  //   return;
+  // }
 
   document.getElementById("developerSettings").style.display = urlParams.has(
     "devmode"

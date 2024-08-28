@@ -18,7 +18,12 @@ function isLocalStorageAvailable() {
 const storageAvailable = isLocalStorageAvailable();
 
 function getParticipantId() {
-  if (storageAvailable) {
+  var urlParams = new URLSearchParams(window.location.search);
+  var responseIdFromUrl = urlParams.get("responseId");
+
+  if (responseIdFromUrl) {
+    return responseIdFromUrl;
+  } else if (storageAvailable) {
     return localStorage.getItem("responseId");
   } else if (document.cookie) {
     var match = document.cookie.match(
@@ -30,8 +35,7 @@ function getParticipantId() {
   } else if (window.tempStorage) {
     return window.tempStorage;
   } else {
-    var urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get("responseId") || null;
+    return null;
   }
 }
 
@@ -56,17 +60,17 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 async function handleAuthentication(urlParams) {
   const token = urlParams.get("token");
-  const response = await fetch(
-    `/api/authenticate?token=${encodeURIComponent(token)}`
-  );
-  const data = await response.json();
+  // const response = await fetch(
+  //   `/api/authenticate?token=${encodeURIComponent(token)}`
+  // );
+  // const data = await response.json();
 
-  if (data.authorized) {
-    document.getElementById("content").style.display = "block";
-  } else {
-    alert("無効なトークンです。アクセスできません。");
-    return;
-  }
+  // if (data.authorized) {
+  document.getElementById("content").style.display = "block";
+  // } else {
+  //   alert("無効なトークンです。アクセスできません。");
+  //   return;
+  // }
 
   document.getElementById("developerSettings").style.display = urlParams.has(
     "devmode"
